@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fsteam>
 
 using namespace std;
 
@@ -52,6 +53,22 @@ void RemovePerson(vector<Person>& p, int id) {
 	}
 	cout << "Not found person with id: " << id << endl;
 }
+bool FindPerson(vector<Person> p, string name) {
+	for (Person i : p) {
+		if (i.name == name) {
+			return true;
+		}
+	}
+	return false;
+}
+void ExportToFile(vector<Person>)
+
+
+
+
+
+
+
 
 int main () {
 	vector<Person> List;
