@@ -94,7 +94,7 @@ struct LinkedList {
         }
         return false;
 
-        bool Update(int updataId) {
+        bool Update(int updateId) {
             if (head == NULL) {
                 cout << "No book available" << endl;
                 return false;
@@ -186,7 +186,8 @@ int main()
             break;
         }
         }
-
+        system("pause");
+        cout << "Press any key to continue...";
     } while (true);
 }
 
