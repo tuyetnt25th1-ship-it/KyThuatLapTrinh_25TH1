@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-using namespace ranges::in_out_result;
 using namespace std;
 
 struct Author {
@@ -23,14 +22,14 @@ struct Book {
     int id;
     string name;
     Author author;
-    friend ostream& operator << (ostream& os, const Book& b) {
+    friend ostream& operator<< (ostream& os, const Book& b) {
         os << "Book information: " << endl;
         os << "\t+ Id:" << b.id << endl;
         os << "\t+ Name:" << b.name << endl;
         os << "\t+ Author name: " << b.author.name << endl;
         return os;
     }
-    friend istream& operator << (istream& os, const Book& b) {
+    friend istream& operator>> (istream& in, Book& b) {
         cout << "Book information: " << endl;
         cout << "\t+ Id:";
         in >> b.id;
@@ -39,24 +38,28 @@ struct Book {
         getline(in, b.name);
         in >> b.author;
         return in;
+    }
 };
+
 struct Node {
     Book data;
     Node* next;
-    void Create(Book b) {
-        data = b;
-        next = nullptr;
+    Node* Create(Book b) {
+        Node* result = new Node; 
+        result->data = b;
+        result->next = nullptr;
+        return result;
     }
 };
 
 struct LinkedList {
     Node* head;
-    void Show(LinkedList books) {
-        if (books.head == NULL) {
+    void Show() {
+        if (head == NULL) {
             cout << "No book available" << endl;
             return;
         }
-        Node* item = books.head;
+        Node* item = head;
         while (item != NULL) {
             cout << item->data;
             item = item->next;
@@ -67,8 +70,47 @@ struct LinkedList {
         p->next = head;
         head = p;
     }
-};
+    bool Remove(int removeId) {
+        if (head == NULL) {
+            cout << "No book available" << endl;
+            return true;
 
+        }
+        Node* item = head;
+        if (item->data.id == removeId) { //Xoa dau danh sach
+            head = item->next;
+            delete item;
+            return true;
+
+        }
+        while (item->next != NULL) {
+            if (item->next->data.id == removeId) {
+                Node* temp = item->next;
+                item->next = item->next->next;
+                delete temp;
+                return true;
+            }
+            item = item->next;
+        }
+        return false;
+
+        bool Update(int updataId) {
+            if (head == NULL) {
+                cout << "No book available" << endl;
+                return false;
+
+            }
+            Node* item = head;
+            while (item != NULL) {
+                if (item->data.id == updateId) {
+                    cin >> item->data;
+                    return true;
+                }
+                item = item->next;
+            }
+            return false;
+        }
+    };
 
 
 
@@ -106,10 +148,26 @@ int main()
             break;
         }
         case 3: {
+            int removeId;
+            cout << "Enter book's id to remove: ";
+            cin >> removeId;
+            bool res = books.Remove(removeId);
+            if (res)
+                cout << "Remove book successfully" << endl;
+            else
+                cout << "Invalid book id" << endl;
             break;
         }
         case 4: {
-            break;
+            int updateId;
+            cout << "Enter book's id to update:";
+            cin >> updateId;
+            bool res = books.Update(updateId);
+            if (res)
+                cout << "Update book successfully" << endl;
+            else
+                cout << "Invalid book id" << endl;
+                break;
         }
         case 5: {
             break;
